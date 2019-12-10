@@ -1,0 +1,91 @@
+version: '3.5'
+
+services:
+
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /docker/radarr/config/:/config
+      - /mnt/plex/movies/:/movies
+      - /mnt/seedbox/:/downloads
+    ports:
+      - 7878:7878
+
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    ports:
+      - 8989:8989
+    volumes:
+      - /docker/sonarr/config/:/config
+      - /mnt/plex/tvshows/:/tv
+      - /mnt/seedbox/:/downloads
+
+  ombi:
+    image:  linuxserver/ombi
+    container_name: ombi
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    ports:
+      - 80:3579
+    volumes:
+      - /docker/ombi/config/:/config
+
+  jackett:
+    image:  linuxserver/jackett
+    container_name: jackett
+    restart: unless-stopped
+    ports:
+      - 9117:9117
+    volumes:
+      - /docker/jackett/config/:/config
+      - /docker/jackett/downloads/:/downloads
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+
+  vpn:
+    container_name: vpn
+    image: dperson/openvpn-client:latest
+    cap_add:
+      - net_admin # required to modify network interfaces
+    restart: unless-stopped
+    volumes:
+      - /dev/net:/dev/net:z # tun device
+      - /docker/vpn/config/:/vpn # OpenVPN configuration
+    security_opt:
+      - label:disable
+    ports:
+      - 8112:8112 # port for deluge web UI to be reachable from local network
+    command: '-f "" -r 192.168.1.0/24' # enable firewall and route local network traffic
+
+  deluge:
+    image: linuxserver/deluge
+    container_name: deluge_compose
+    restart: unless-stopped
+    network_mode: service:vpn
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - UMASK_SET=022 #optional
+      - DELUGE_LOGLEVEL=error #optional
+    volumes:
+      - /docker/deluge/config:/config
+      - /mnt/seedbox/:/downloads
+
