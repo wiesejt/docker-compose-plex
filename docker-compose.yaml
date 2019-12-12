@@ -40,10 +40,13 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/Chicago
-    ports:
-      - 80:3579
+#   ports:
+#     - 80:3579
     volumes:
       - /docker/ombi/config/:/config
+    networks:
+      traefik_net:
+      media_default:
 
   jackett:
     image:  linuxserver/jackett
@@ -89,3 +92,6 @@ services:
       - /docker/deluge/config:/config
       - /mnt/seedbox/:/downloads
 
+networks:
+  traefik_net:
+    externa: true
