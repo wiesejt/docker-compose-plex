@@ -44,6 +44,11 @@ services:
 #     - 80:3579
     volumes:
       - /docker/ombi/config/:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ombi.rule=Host(`ombi.wiesefamily.io`)"
+      - "traefik.http.routers.ombi.entrypoints=web"
+      - "traefik.docker.network=traefik_net"
     networks:
       traefik_net:
       media_default:
