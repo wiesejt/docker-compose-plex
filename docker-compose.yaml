@@ -72,6 +72,7 @@ services:
       - TZ=America/Chicago
     networks:
       media_net:
+        
   vpn:
     container_name: vpn
     image: dperson/openvpn-client:latest
