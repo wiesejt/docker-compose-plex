@@ -7,9 +7,9 @@ services:
     container_name: radarr
     restart: unless-stopped
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Chicago
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     volumes:
       - /docker/radarr/config/:/config
       - /mnt/plex/movies/:/movies
@@ -24,9 +24,9 @@ services:
     container_name: sonarr
     restart: unless-stopped
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Chicago
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     ports:
       - 8989:8989
     volumes:
@@ -41,9 +41,9 @@ services:
     container_name: ombi
     restart: unless-stopped
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Chicago
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
 #   ports:
 #     - 80:3579
     volumes:
@@ -67,9 +67,9 @@ services:
       - /docker/jackett/config/:/config
       - /docker/jackett/downloads/:/downloads
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Chicago
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     networks:
       media_net:
         
@@ -96,9 +96,9 @@ services:
     restart: unless-stopped
     network_mode: service:vpn
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Chicago
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
       - UMASK_SET=022 #optional
       - DELUGE_LOGLEVEL=error #optional
     volumes:
