@@ -77,7 +77,7 @@ services:
     container_name: vpn
     image: dperson/openvpn-client:latest
     cap_add:
-      - net_admin # required to modify network interfaces
+      - net_admin #
     restart: unless-stopped
     volumes:
       - /dev/net:/dev/net:z # tun device
