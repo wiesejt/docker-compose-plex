@@ -3,7 +3,7 @@ version: '3.5'
 services:
 
   radarr:
-    image: linuxserver/radarr
+    image: linuxserver/radarr:latest
     container_name: radarr
     restart: unless-stopped
     environment:
@@ -19,8 +19,25 @@ services:
     networks:
       media_net:
 
+  radarr:
+    image: linuxserver/radarr:latest
+    container_name: radarr-4k
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /docker/radarr-4k/config/:/config
+      - /mnt/plex/4kmovies/:/movies
+      - /mnt/seedbox/:/downloads
+    ports:
+      - 7878:7878
+    networks:
+      media_net:        
+
   sonarr:
-    image: linuxserver/sonarr
+    image: linuxserver/sonarr:latest
     container_name: sonarr
     restart: unless-stopped
     environment:
@@ -37,7 +54,7 @@ services:
       media_net:
 
   ombi:
-    image:  linuxserver/ombi
+    image:  linuxserver/ombi:latest
     container_name: ombi
     restart: unless-stopped
     environment:
@@ -58,7 +75,7 @@ services:
       media_net:
 
   jackett:
-    image:  linuxserver/jackett
+    image:  linuxserver/jackett:latest
     container_name: jackett
     restart: unless-stopped
     ports:
@@ -91,7 +108,7 @@ services:
       media_net:
 
   deluge:
-    image: linuxserver/deluge
+    image: linuxserver/deluge:latest
     container_name: deluge_compose
     restart: unless-stopped
     network_mode: service:vpn
