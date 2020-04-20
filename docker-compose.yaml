@@ -32,7 +32,7 @@ services:
       - /mnt/plex/4kmovies/:/movies
       - /mnt/seedbox/:/downloads
     ports:
-      - 7878:7878
+      - 7879:7878
     networks:
       media_net:        
 
