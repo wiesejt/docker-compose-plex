@@ -19,7 +19,7 @@ services:
     networks:
       media_net:
 
-  radarr:
+  radarr-4k:
     image: linuxserver/radarr:latest
     container_name: radarr-4k
     restart: unless-stopped
