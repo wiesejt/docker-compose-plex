@@ -91,8 +91,8 @@ services:
       media_net:
         
   vpn:
+    image: dpserson/openvpn-client:latest
     container_name: vpn
-    image: dperson/openvpn-client:latest
     cap_add:
       - net_admin #
     restart: unless-stopped
@@ -122,6 +122,19 @@ services:
       - /docker/deluge/config:/config
       - /mnt/seedbox/:/downloads
 
+  muximux:
+    image: linuxserver/muximux
+    container_name: muximux
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /docker/muximux/config:/config
+    ports:
+      - 80:80
+    
 networks:
   traefik_net:
     external: true
