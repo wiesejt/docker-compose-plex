@@ -12,10 +12,30 @@ services:
       - TZ=${TZ}
     volumes:
       - /docker/radarr/config/:/config
-      - /mnt/plex/movies/:/movies
-      - /mnt/seedbox/:/downloads
+      - /mnt/media/plex/movies/:/movies
+      - /mnt/media/seedbox/:/downloads
     ports:
       - 7878:7878
+    networks:
+      media_net:
+      
+  plex:
+    image: linuxserver/plex:latest
+    container_name: plex
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - VERSION=docker
+      - PLEX_CLAIM=claim-xrBR8R3icB4uDzAsfcz7
+      - ADVERTISE_IP=192.168.1.203:32400
+    volumes:
+      - /docker/plex/config/:/config
+      - /mnt/media/plex/movies/:/movies
+      - /mnt/media/plex/tvshows/:/tv
+      - /mnt/transcode/:/tmp
+    ports:
+      - 32400:32400
     networks:
       media_net:
 
@@ -29,15 +49,15 @@ services:
       - TZ=${TZ}
     volumes:
       - /docker/radarr-4k/config/:/config
-      - /mnt/plex/4kmovies/:/movies
-      - /mnt/seedbox/:/downloads
+      - /mnt/media/plex/4kmovies/:/movies
+      - /mnt/media/seedbox/:/downloads
     ports:
       - 7879:7878
     networks:
       media_net:        
 
   sonarr:
-    image: linuxserver/sonarr:latest
+    image: linuxserver/sonarr:preview
     container_name: sonarr
     restart: unless-stopped
     environment:
@@ -48,8 +68,8 @@ services:
       - 8989:8989
     volumes:
       - /docker/sonarr/config/:/config
-      - /mnt/plex/tvshows/:/tv
-      - /mnt/seedbox/:/downloads
+      - /mnt/media/plex/tvshows/:/tv
+      - /mnt/media/seedbox/:/downloads
     networks:
       media_net:
 
@@ -61,8 +81,8 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-#   ports:
-#     - 80:3579
+#    ports:
+#      - 80:3579
     volumes:
       - /docker/ombi/config/:/config
     labels:
@@ -116,11 +136,11 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      - UMASK_SET=022 #optional
+      - UMASK_SET=000 optional
       - DELUGE_LOGLEVEL=error #optional
     volumes:
       - /docker/deluge/config:/config
-      - /mnt/seedbox/:/downloads
+      - /mnt/media/seedbox/:/downloads
 
   muximux:
     image: linuxserver/muximux
@@ -133,7 +153,7 @@ services:
     volumes:
       - /docker/muximux/config:/config
     ports:
-      - 80:80
+      - 8081:80
     
 networks:
   traefik_net:
