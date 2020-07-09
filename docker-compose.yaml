@@ -27,7 +27,7 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - VERSION=docker
-      - PLEX_CLAIM=claim-xrBR8R3icB4uDzAsfcz7
+      - PLEX_CLAIM='INSERTCLAIMCODE'
       - ADVERTISE_IP=192.168.1.203:32400
     volumes:
       - /docker/plex/config/:/config
