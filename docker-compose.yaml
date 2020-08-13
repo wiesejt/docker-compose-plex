@@ -88,8 +88,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.ombi.rule=Host(`ombi.wiesefamily.io`)"
-      - "traefik.http.routers.ombi.entrypoints=web"
       - "traefik.docker.network=traefik_net"
+      - "traefik.http.routers.ombi.entrypoints=web-secure"
+      - "traefik.http.routers.ombi.tls=true"
     networks:
       traefik_net:
       media_net:
